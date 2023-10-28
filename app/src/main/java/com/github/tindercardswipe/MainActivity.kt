@@ -3,7 +3,7 @@ package com.github.tindercardswipe
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.github.lib.SwipeAnimationScreen
+import com.github.lib.SwipeAnimation
 import com.github.tindercardswipe.ui.theme.TinderCardSwipeTheme
 
 class MainActivity : ComponentActivity() {
@@ -11,7 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TinderCardSwipeTheme {
-                SwipeAnimationScreen()
+                SwipeAnimation()
             }
         }
     }
