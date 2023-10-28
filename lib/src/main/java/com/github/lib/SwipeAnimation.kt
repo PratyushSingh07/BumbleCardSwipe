@@ -36,12 +36,7 @@ fun SwipeAnimation() {
     ) {
         if (currentIndex < cardList.size) {
             SwipeableCard(
-                onSwipeLeft = {
-                    if (currentIndex < cardList.size - 1) {
-                        currentIndex++
-                    }
-                },
-                onSwipeRight = {
+                onSwipe = {
                     if (currentIndex < cardList.size - 1) {
                         currentIndex++
                     }
@@ -60,6 +55,7 @@ fun SwipeAnimation() {
                 }
             }
         } else {
+            // If all cards have been swiped
             Text(text = "All cards swiped!", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
     }

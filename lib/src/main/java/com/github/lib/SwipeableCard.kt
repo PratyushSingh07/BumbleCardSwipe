@@ -23,8 +23,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SwipeableCard(
-    onSwipeLeft: () -> Unit,
-    onSwipeRight: () -> Unit,
+    onSwipe: () -> Unit,
     onCardRemoved: () -> Unit,
     content: @Composable (Modifier) -> Unit
 ) {
@@ -44,9 +43,9 @@ fun SwipeableCard(
                 state = rememberDraggableState { delta ->
                     offsetX += delta
                     if (offsetX > 300) {
-                        onSwipeRight()
+                        onSwipe()
                     } else if (offsetX < -300) {
-                        onSwipeLeft()
+                        onSwipe()
                     }
                 },
                 onDragStopped = {
