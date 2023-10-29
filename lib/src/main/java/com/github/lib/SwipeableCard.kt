@@ -41,11 +41,6 @@ fun Modifier.swipeableCard(
             orientation = Orientation.Horizontal,
             state = rememberDraggableState { delta ->
                 offsetX += delta
-                if (offsetX > 300) {
-                    onSwipe()
-                } else if (offsetX < -300) {
-                    onSwipe()
-                }
             },
             onDragStopped = {
                 if (offsetX > 300) {
