@@ -33,6 +33,7 @@ fun Modifier.swipeableCard(
         .fillMaxWidth()
         .padding(16.dp)
         .graphicsLayer(
+            translationX = offsetX,
             rotationZ = offsetX / 20,
             alpha = 1 - abs(offsetX / 300f)
         )
