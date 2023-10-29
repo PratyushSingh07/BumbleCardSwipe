@@ -3,7 +3,6 @@ package com.github.lib
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -44,8 +43,10 @@ fun Modifier.swipeableCard(
             },
             onDragStopped = {
                 if (offsetX > 300) {
+                    offsetX = -1000f
                     onCardRemoved()
                 } else if (offsetX < -300) {
+                    offsetX = 1000f
                     onCardRemoved()
                 } else {
                     // Snap the card back to its original position if not swiped off
