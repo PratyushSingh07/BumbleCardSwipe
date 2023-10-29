@@ -28,12 +28,28 @@ class MainActivity : ComponentActivity() {
                                 Log.d("CARD_SWIPED", "swipe the card")
                             },
                             onCardRemoved = {
-                                    Log.d("CARD_REMOVED", "remove the card")
+                                Log.d("CARD_REMOVED", "remove the card")
                             }
                         ),
                     elevation = CardDefaults.cardElevation(8.dp)
                 ) {
                     Text(text = "Hello", modifier = Modifier.padding(16.dp))
+                }
+                Card(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                        .swipeableCard(
+                            onSwipe = {
+                                Log.d("CARD_SWIPED", "swipe the card")
+                            },
+                            onCardRemoved = {
+                                Log.d("CARD_REMOVED", "remove the card")
+                            }
+                        ),
+                    elevation = CardDefaults.cardElevation(8.dp)
+                ) {
+                    Text(text = "Bye", modifier = Modifier.padding(16.dp))
                 }
             }
         }
