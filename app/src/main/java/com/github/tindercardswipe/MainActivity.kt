@@ -9,8 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import com.github.tindercardswipe.component.ProfileCard
 import com.github.tindercardswipe.ui.theme.TinderCardSwipeTheme
+import com.github.tindercardswipe.utils.FontFamily
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +38,12 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     if (currentIndex.intValue > lastIndex) {
-                        Text(text = "All Cards Swiped")
+                        Text(
+                            text = "All Cards Swiped",
+                            fontSize = 30.sp,
+                            fontFamily = FontFamily.appFontFamily,
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
             }
