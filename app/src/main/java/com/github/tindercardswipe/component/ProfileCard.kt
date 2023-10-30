@@ -12,10 +12,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.lib.ExperimentalSwipeGestureApi
 import com.github.lib.swipeableCard
 import com.github.tindercardswipe.Dummy
 import com.github.tindercardswipe.utils.FontFamily
 
+@OptIn(ExperimentalSwipeGestureApi::class)
 @Composable
 fun ProfileCard(
     profile: Dummy,
