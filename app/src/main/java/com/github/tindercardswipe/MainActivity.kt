@@ -32,19 +32,17 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(16.dp)
                             .swipeableCard(
-                                onSwipe = {
-                                    Log.d("CARD_SWIPED", "swipe the card")
+                                onRightSwipe = {
+                                    Toast.makeText(this,"Left swipe",Toast.LENGTH_SHORT).show()
+                                    currentIndex.value++
                                 },
-                                onCardRemoved = {
-                                    Toast
-                                        .makeText(this, "Card Removed", Toast.LENGTH_SHORT)
-                                        .show()
+                                onLeftSwipe = {
+                                    Toast.makeText(this,"Right swipe",Toast.LENGTH_SHORT).show()
                                     currentIndex.value++
                                 }
                             ),
                         elevation = CardDefaults.cardElevation(8.dp)
                     ) {
-
                         Text(text = it.name, modifier = Modifier.padding(16.dp))
                     }
                 }

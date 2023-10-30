@@ -22,8 +22,8 @@ import kotlin.math.roundToInt
 
 @Composable
 fun Modifier.swipeableCard(
-    onSwipe: () -> Unit,
-    onCardRemoved: () -> Unit,
+    onRightSwipe: () -> Unit,
+    onLeftSwipe: () -> Unit
 ): Modifier = composed {
     var offsetX by remember { mutableFloatStateOf(0f) }
 
@@ -33,8 +33,7 @@ fun Modifier.swipeableCard(
         .padding(16.dp)
         .graphicsLayer(
             translationX = offsetX,
-            rotationZ = offsetX / 20,
-            alpha = 1 - abs(offsetX / 300f)
+            rotationZ = offsetX / 20
         )
         .draggable(
             orientation = Orientation.Horizontal,
@@ -44,10 +43,10 @@ fun Modifier.swipeableCard(
             onDragStopped = {
                 if (offsetX > 300) {
                     offsetX = -1000f
-                    onCardRemoved()
+                    onLeftSwipe()
                 } else if (offsetX < -300) {
                     offsetX = 1000f
-                    onCardRemoved()
+                    onRightSwipe()
                 } else {
                     // Snap the card back to its original position if not swiped off
                     offsetX = 0f
