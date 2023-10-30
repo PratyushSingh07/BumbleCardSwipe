@@ -1,12 +1,12 @@
 package com.github.lib
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -15,25 +15,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
-import kotlin.math.abs
 import kotlin.math.roundToInt
 
-
-@Composable
 fun Modifier.swipeableCard(
     onRightSwipe: () -> Unit,
-    onLeftSwipe: () -> Unit
+    onLeftSwipe: () -> Unit,
+    enableSpringEffect: Boolean = false
 ): Modifier = composed {
     var offsetX by remember { mutableFloatStateOf(0f) }
 
+    val animatedOffsetX by animateFloatAsState(
+        targetValue = offsetX,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy), label = ""
+    )
+
+    val offsetValue = if (enableSpringEffect) animatedOffsetX else offsetX
+
     Modifier
-        .offset { IntOffset(offsetX.roundToInt(), 0) }
-        .fillMaxWidth()
-        .padding(16.dp)
+        .offset { IntOffset(offsetValue.roundToInt(), 0) }
         .graphicsLayer(
-            translationX = offsetX,
-            rotationZ = offsetX / 20
+            translationX = offsetValue * 1.5f,
+            rotationZ = offsetValue / 20
         )
         .draggable(
             orientation = Orientation.Horizontal,
@@ -42,10 +44,10 @@ fun Modifier.swipeableCard(
             },
             onDragStopped = {
                 if (offsetX > 300) {
-                    offsetX = -1000f
+                    offsetX = 1000f
                     onLeftSwipe()
                 } else if (offsetX < -300) {
-                    offsetX = 1000f
+                    offsetX = -1000f
                     onRightSwipe()
                 } else {
                     // Snap the card back to its original position if not swiped off
@@ -54,4 +56,3 @@ fun Modifier.swipeableCard(
             }
         )
 }
-

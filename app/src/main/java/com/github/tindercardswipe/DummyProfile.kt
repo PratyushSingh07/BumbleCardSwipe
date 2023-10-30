@@ -1,4 +1,4 @@
-package com.github.tindercardswipe.ui.theme
+package com.github.tindercardswipe
 
 data class Dummy(val name: String)
 
