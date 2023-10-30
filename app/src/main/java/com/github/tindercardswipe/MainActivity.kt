@@ -3,12 +3,15 @@ package com.github.tindercardswipe
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.github.tindercardswipe.component.ProfileCard
@@ -24,7 +27,10 @@ class MainActivity : ComponentActivity() {
                 val currentIndex = remember { mutableIntStateOf(0) }
 
                 Box(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White),
+                    contentAlignment = Alignment.Center
                 ) {
                     DummyProfile.list.forEachIndexed { _, profile ->
                         ProfileCard(
@@ -40,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     if (currentIndex.intValue > lastIndex) {
                         Text(
                             text = "All Cards Swiped",
-                            fontSize = 30.sp,
+                            fontSize = 26.sp,
                             fontFamily = FontFamily.appFontFamily,
                             textAlign = TextAlign.Center
                         )
