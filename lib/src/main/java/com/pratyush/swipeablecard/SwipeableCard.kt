@@ -20,19 +20,20 @@ import androidx.compose.ui.unit.IntOffset
 import com.pratyush.swipeablecard.enums.Direction
 import kotlin.math.roundToInt
 
-@Composable
-fun rememberSwipeableCardOffset(initialOffset: Float): MutableState<Float> {
-    return rememberSaveable { mutableFloatStateOf(initialOffset) }
-}
+/**
+ * Enables Bumble like swipe gesture
+ *
+ *  @param onSwipe will be called once a swipe gesture is completed. The given [Direction] will indicate which side the gesture was performed on
+ *  @param enableSpringEffect enables a spring like effect if the card is released before it reaches the threshold. By default it is set to false
+ */
 
 @ExperimentalSwipeGestureApi
 fun Modifier.swipeableCard(
     onSwipe: (Direction) -> Unit,
-    initialOffset: Float = 0f,
     enableSpringEffect: Boolean = false
 ): Modifier = composed {
 
-    var offsetX by rememberSwipeableCardOffset(initialOffset)
+    var offsetX by rememberSwipeableCardOffset(0f)
 
     val animatedOffsetX by animateFloatAsState(
         targetValue = offsetX,
@@ -65,4 +66,9 @@ fun Modifier.swipeableCard(
                 }
             }
         )
+}
+
+@Composable
+fun rememberSwipeableCardOffset(initialOffset: Float): MutableState<Float> {
+    return rememberSaveable { mutableFloatStateOf(initialOffset) }
 }

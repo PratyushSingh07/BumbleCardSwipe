@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                         .background(Color.White),
                     contentAlignment = Alignment.Center
                 ) {
-                    DummyProfile.list.forEachIndexed { _, profile ->
+                    DummyProfile.list.reversed().forEachIndexed { _, profile ->
                         ProfileCard(
                             profile = profile,
                             onSwipe = {
