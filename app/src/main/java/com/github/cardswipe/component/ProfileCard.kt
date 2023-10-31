@@ -29,7 +29,7 @@ fun ProfileCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = Color.Cyan,
+            containerColor = Color.LightGray,
         ),
         modifier = modifier
             .fillMaxSize()
