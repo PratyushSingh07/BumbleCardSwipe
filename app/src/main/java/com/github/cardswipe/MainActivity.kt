@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                             .background(Color.White),
                         contentAlignment = Alignment.Center
                     ) {
-                        DummyProfile.list.forEachIndexed { _, profile ->
+                        DummyProfile.list.reversed().forEachIndexed { _, profile ->
                             ProfileCard(
                                 profile = profile,
                                 onSwipe = {
@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
                             modifier= Modifier.size(70.dp),
                             shape = CircleShape
                         ) {
-                            Icon(imageVector = Icons.Filled.Close, contentDescription = "right")
+                            Icon(imageVector = Icons.Filled.Close, contentDescription = "left")
                         }
                         Button(
                             onClick = {},
