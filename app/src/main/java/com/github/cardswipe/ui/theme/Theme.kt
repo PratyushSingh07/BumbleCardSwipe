@@ -1,4 +1,4 @@
-package com.github.tindercardswipe.ui.theme
+package com.github.cardswipe.ui.theme
 
 import android.app.Activity
 import android.os.Build

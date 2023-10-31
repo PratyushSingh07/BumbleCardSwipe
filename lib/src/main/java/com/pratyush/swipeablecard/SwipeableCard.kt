@@ -1,4 +1,4 @@
-package com.github.lib
+package com.pratyush.swipeablecard
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -65,4 +65,11 @@ fun Modifier.swipeableCard(
                 }
             }
         )
+}
+
+enum class Direction {
+
+    LEFT,
+
+    RIGHT
 }

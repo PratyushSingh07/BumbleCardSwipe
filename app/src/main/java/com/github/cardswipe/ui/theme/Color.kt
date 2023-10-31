@@ -1,4 +1,4 @@
-package com.github.tindercardswipe.ui.theme
+package com.github.cardswipe.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.github.tindercardswipe.component
+package com.github.cardswipe.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,10 +14,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.lib.ExperimentalSwipeGestureApi
-import com.github.lib.swipeableCard
-import com.github.tindercardswipe.Dummy
-import com.github.tindercardswipe.utils.FontFamily
+import com.github.cardswipe.Dummy
+import com.github.cardswipe.utils.FontFamily
+import com.pratyush.swipeablecard.ExperimentalSwipeGestureApi
+import com.pratyush.swipeablecard.swipeableCard
 
 @OptIn(ExperimentalSwipeGestureApi::class)
 @Composable
@@ -52,7 +52,8 @@ fun ProfileCard(
                 modifier = Modifier.padding(16.dp),
                 fontFamily = FontFamily.appFontFamily,
                 textAlign = TextAlign.Center,
-                fontSize = 36.sp
+                fontSize = 200.sp,
+                color = Color.White
             )
         }
     }

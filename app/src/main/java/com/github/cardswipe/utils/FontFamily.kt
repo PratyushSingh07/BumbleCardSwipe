@@ -1,4 +1,4 @@
-package com.github.tindercardswipe.utils
+package com.github.cardswipe.utils
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
