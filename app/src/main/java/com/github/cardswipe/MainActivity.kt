@@ -1,6 +1,7 @@
 package com.github.cardswipe
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -17,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.github.cardswipe.component.ProfileCard
 import com.github.cardswipe.ui.theme.TinderCardSwipeTheme
 import com.github.cardswipe.utils.FontFamily
-import com.pratyush.swipeablecard.Direction
+import com.pratyush.swipeablecard.enums.Direction
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,10 +37,8 @@ class MainActivity : ComponentActivity() {
                     DummyProfile.list.forEachIndexed { _, profile ->
                         ProfileCard(
                             profile = profile,
-                            onRightSwipe = {
-                                currentIndex.intValue++
-                            },
-                            onLeftSwipe = {
+                            onSwipe = {
+                                Log.d("DIRECTION", stringFrom(it))
                                 currentIndex.intValue++
                             }
                         )

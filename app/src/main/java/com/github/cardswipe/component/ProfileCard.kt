@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.sp
 import com.github.cardswipe.Dummy
 import com.github.cardswipe.utils.FontFamily
 import com.pratyush.swipeablecard.ExperimentalSwipeGestureApi
+import com.pratyush.swipeablecard.enums.Direction
 import com.pratyush.swipeablecard.swipeableCard
 
 @OptIn(ExperimentalSwipeGestureApi::class)
 @Composable
 fun ProfileCard(
     profile: Dummy,
-    onRightSwipe: () -> Unit,
-    onLeftSwipe: () -> Unit,
+    onSwipe: (Direction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -35,8 +35,7 @@ fun ProfileCard(
             .fillMaxSize()
             .padding(16.dp)
             .swipeableCard(
-                onRightSwipe = onRightSwipe,
-                onLeftSwipe = onLeftSwipe,
+                onSwipe = onSwipe,
                 enableSpringEffect = true
             ),
         elevation = CardDefaults.cardElevation(8.dp)

@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.IntOffset
+import com.pratyush.swipeablecard.enums.Direction
 import kotlin.math.roundToInt
 
 @Composable
@@ -26,8 +27,7 @@ fun rememberSwipeableCardOffset(initialOffset: Float): MutableState<Float> {
 
 @ExperimentalSwipeGestureApi
 fun Modifier.swipeableCard(
-    onRightSwipe: () -> Unit,
-    onLeftSwipe: () -> Unit,
+    onSwipe: (Direction) -> Unit,
     initialOffset: Float = 0f,
     enableSpringEffect: Boolean = false
 ): Modifier = composed {
@@ -55,21 +55,14 @@ fun Modifier.swipeableCard(
             onDragStopped = {
                 if (offsetX > 300) {
                     offsetX = 1000f
-                    onLeftSwipe()
+                    onSwipe(Direction.RIGHT)
                 } else if (offsetX < -300) {
                     offsetX = -1000f
-                    onRightSwipe()
+                    onSwipe(Direction.LEFT)
                 } else {
                     // Snap the card back to its original position if not swiped off
                     offsetX = 0f
                 }
             }
         )
-}
-
-enum class Direction {
-
-    LEFT,
-
-    RIGHT
 }
