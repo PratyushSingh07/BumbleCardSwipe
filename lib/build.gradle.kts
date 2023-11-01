@@ -1,4 +1,5 @@
 plugins {
+    id("maven-publish")
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
@@ -57,4 +58,18 @@ dependencies {
     implementation ("androidx.compose.runtime:runtime:1.5.4")
     implementation ("androidx.compose.runtime:runtime-livedata:1.5.4")
     implementation ("androidx.compose.runtime:runtime-rxjava2:1.5.4")
+}
+
+afterEvaluate{
+    publishing{
+        publications{
+            register<MavenPublication>("release"){
+                from(components["release"])
+
+                groupId="com.github.PratyushSingh07"
+                artifactId = "BumbleCardSwipe"
+                version = "0.0.1"
+            }
+        }
+    }
 }
