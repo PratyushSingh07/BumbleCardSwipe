@@ -1,7 +1,6 @@
 package com.github.cardswipe
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -13,13 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -48,7 +40,7 @@ class MainActivity : ComponentActivity() {
                 val currentIndex = rememberSaveable { mutableIntStateOf(0) }
 
                 var hint by remember {
-                    mutableStateOf("Swipe a card")
+                    mutableStateOf("Try to swipe a card")
                 }
 
                 Column(
