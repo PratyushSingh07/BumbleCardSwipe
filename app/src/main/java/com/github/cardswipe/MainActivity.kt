@@ -20,17 +20,20 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.cardswipe.component.Hint
 import com.github.cardswipe.component.ProfileCard
 import com.github.cardswipe.ui.theme.TinderCardSwipeTheme
 import com.github.cardswipe.utils.FontFamily
@@ -43,6 +46,10 @@ class MainActivity : ComponentActivity() {
             TinderCardSwipeTheme {
                 val lastIndex = DummyProfile.list.lastIndex
                 val currentIndex = rememberSaveable { mutableIntStateOf(0) }
+
+                var hint by remember {
+                    mutableStateOf("Swipe a card")
+                }
 
                 Column(
                     modifier = Modifier
@@ -61,7 +68,7 @@ class MainActivity : ComponentActivity() {
                             ProfileCard(
                                 profile = profile,
                                 onSwipe = {
-                                    Log.d("DIRECTION", stringFrom(it))
+                                    hint = "Swiped towards ${stringFrom(it)}"
                                     currentIndex.intValue++
                                 }
                             )
@@ -82,20 +89,7 @@ class MainActivity : ComponentActivity() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Button(
-                            onClick = {},
-                            modifier= Modifier.size(70.dp),
-                            shape = CircleShape
-                        ) {
-                            Icon(imageVector = Icons.Filled.Close, contentDescription = "left")
-                        }
-                        Button(
-                            onClick = {},
-                            modifier= Modifier.size(70.dp),
-                            shape = CircleShape
-                        ) {
-                            Icon(imageVector = Icons.Filled.Check, contentDescription = "right")
-                        }
+                        Hint(text = hint)
                     }
                 }
             }
