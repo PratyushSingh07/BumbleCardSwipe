@@ -33,8 +33,29 @@ https://github.com/openMF/mifos-mobile/assets/90026952/fea1c49a-1cff-487c-a5e8-9
 }
 ```
 
+*Groovy*
+- Add the dependency to your app `build.gradle`:
+
+```kotlin
+  dependencies {
+	        implementation 'com.github.PratyushSingh07:BumbleCardSwipe:Tag'
+	}
+```
+  
+  - Add below snippet in your root `build.gradle` at the end of repositories:
+    
+```kotlin
+    dependencyResolutionManagement {
+		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+		repositories {
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
 **2. Usage**
-- Add the `Modifier.swipeableCard()` into your @Composable function to enable Tinder-like card gestures:
+- Add the `Modifier.swipeableCard()` into your @Composable function to enable Bumble like card gestures:
  ```kotlin
  Box(
     modifier = Modifier
