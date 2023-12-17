@@ -12,11 +12,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -30,8 +37,10 @@ import com.github.cardswipe.component.ProfileCard
 import com.github.cardswipe.ui.theme.TinderCardSwipeTheme
 import com.github.cardswipe.utils.FontFamily
 import com.pratyush.swipeablecard.enums.Direction
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -43,45 +52,81 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf("Try to swipe a card")
                 }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = Color.White),
-                    verticalArrangement = Arrangement.spacedBy(50.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(600.dp)
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        DummyProfile.list.reversed().forEachIndexed { _, profile ->
-                            ProfileCard(
-                                profile = profile,
-                                onSwipe = {
-                                    hint = "Swiped towards ${stringFrom(it)}"
-                                    currentIndex.intValue++
-                                }
-                            )
-                        }
-                        if (currentIndex.intValue > lastIndex) {
-                            Text(
-                                text = "All Cards Swiped",
-                                fontSize = 26.sp,
-                                fontFamily = FontFamily.appFontFamily,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                // List of Dummy profile card
+                val profileList = DummyProfile.list.toMutableList()
+
+                val scope = rememberCoroutineScope()
+                val snackBarHostState = remember { SnackbarHostState() }
+
+                Scaffold(
+                    snackbarHost = {
+                        SnackbarHost(hostState = snackBarHostState)
                     }
-                    Row(
+                ) { contentPadding ->
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                            .fillMaxSize()
+                            .background(color = Color.White)
+                            .padding(contentPadding),
+                        verticalArrangement = Arrangement.spacedBy(50.dp)
                     ) {
-                        Hint(text = hint)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(600.dp)
+                                .background(Color.White),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            profileList.reversed().forEachIndexed { _, profile ->
+                                ProfileCard(
+                                    profile = profile,
+                                    onSwipe = {
+                                        hint = "Swiped towards ${stringFrom(it)}"
+                                        currentIndex.intValue++
+
+                                        // remove swiped profile from list
+                                        profileList.removeFirst()
+
+                                        // Dismiss previous SnackBar
+                                        val currentSnackBar = snackBarHostState.currentSnackbarData
+                                        currentSnackBar?.dismiss()
+
+                                        // Show Snack bar
+                                        scope.launch {
+                                            val result = snackBarHostState
+                                                .showSnackbar(
+                                                    message = "Undo swiped card",
+                                                    actionLabel = "Undo",
+                                                    duration = SnackbarDuration.Short
+                                                )
+                                            if (result == SnackbarResult.ActionPerformed) {
+                                                /* Handle undo action performed */
+                                                currentIndex.intValue-- // Decrement index
+                                                // add swiped profile to list
+                                                profileList.add(0, profile)
+                                            }
+                                        }
+                                    }
+                                )
+                            }
+                            if (currentIndex.intValue > lastIndex) {
+                                Text(
+                                    text = "All Cards Swiped",
+                                    fontSize = 26.sp,
+                                    fontFamily = FontFamily.appFontFamily,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            Hint(text = hint)
+                        }
                     }
                 }
             }
