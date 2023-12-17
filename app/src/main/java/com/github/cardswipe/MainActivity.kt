@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .background(color = Color.White)
                             .padding(contentPadding),
-                        verticalArrangement = Arrangement.spacedBy(50.dp)
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         Box(
                             modifier = Modifier
