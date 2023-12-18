@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.cardswipe.component.Hint
 import com.github.cardswipe.component.ProfileCard
+import com.github.cardswipe.component.ResetButton
 import com.github.cardswipe.ui.theme.TinderCardSwipeTheme
 import com.github.cardswipe.utils.FontFamily
 import com.pratyush.swipeablecard.enums.Direction
@@ -53,7 +53,9 @@ class MainActivity : ComponentActivity() {
                 }
 
                 // List of Dummy profile card
-                val profileList = DummyProfile.list.toMutableList()
+                val profileList = remember { mutableListOf<Dummy>() }.apply {
+                    addAll(DummyProfile.list)
+                }
 
                 val scope = rememberCoroutineScope()
                 val snackBarHostState = remember { SnackbarHostState() }
@@ -68,7 +70,8 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .background(color = Color.White)
                             .padding(contentPadding),
-                        verticalArrangement = Arrangement.SpaceBetween
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Box(
                             modifier = Modifier
@@ -118,15 +121,18 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Hint(text = hint)
-                        }
+                        ResetButton(
+                            onClick = {
+                                currentIndex.intValue = 0
+                                // Dismiss previous SnackBar
+                                val currentSnackBar = snackBarHostState.currentSnackbarData
+                                currentSnackBar?.dismiss()
+                                profileList.clear()
+                                profileList.addAll(DummyProfile.list)
+                            },
+                            text = "Reset"
+                        )
+                        Hint(text = hint)
                     }
                 }
             }
