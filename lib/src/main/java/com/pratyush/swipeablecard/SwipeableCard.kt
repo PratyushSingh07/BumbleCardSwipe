@@ -1,74 +1,132 @@
 package com.pratyush.swipeablecard
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.offset
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.util.VelocityTracker
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.pratyush.swipeablecard.enums.Direction
-import kotlin.math.roundToInt
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
-/**
- * Enables Bumble like swipe gesture
- *
- *  @param onSwipe will be called once a swipe gesture is completed. The given [Direction] will indicate which side the gesture was performed on
- *  @param enableSpringEffect enables a spring like effect if the card is released before it reaches the threshold. By default it is set to false
- */
+@ExperimentalSwipeGestureApi
+@Stable
+class SwipeableCardState {
+
+    internal val offset = Animatable(Offset.Zero, Offset.VectorConverter)
+    internal var size by mutableStateOf(IntSize.Zero)
+    internal var tiltSign by mutableFloatStateOf(1f)
+
+    var swipedDirection by mutableStateOf<Direction?>(null)
+        private set
+
+    val progress: Float
+        get() = if (size.width == 0) 0f else (offset.value.x / size.width).coerceIn(-1f, 1f)
+
+    suspend fun swipe(direction: Direction): Boolean {
+        if (swipedDirection != null) return false
+        swipedDirection = direction
+        val sign = if (direction == Direction.RIGHT) 1f else -1f
+        offset.animateTo(
+            targetValue = Offset(sign * size.width * 1.5f, offset.value.y),
+            animationSpec = tween(durationMillis = 250)
+        )
+        return true
+    }
+
+    suspend fun reset() {
+        swipedDirection = null
+        offset.animateTo(
+            targetValue = Offset.Zero,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessMediumLow
+            )
+        )
+    }
+}
 
 @ExperimentalSwipeGestureApi
 fun Modifier.swipeableCard(
+    state: SwipeableCardState,
     onSwipe: (Direction) -> Unit,
-    enableSpringEffect: Boolean = false
-): Modifier = composed {
-
-    var offsetX by rememberSwipeableCardOffset(0f)
-
-    val animatedOffsetX by animateFloatAsState(
-        targetValue = offsetX,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy), label = ""
-    )
-
-    val offsetValue = if (enableSpringEffect) animatedOffsetX else offsetX
-
-    Modifier
-        .offset { IntOffset(offsetValue.roundToInt(), 0) }
-        .graphicsLayer(
-            translationX = offsetValue * 1.5f,
-            rotationZ = offsetValue / 20
-        )
-        .draggable(
-            orientation = Orientation.Horizontal,
-            state = rememberDraggableState { delta ->
-                offsetX += delta
-            },
-            onDragStopped = {
-                if (offsetX > 300) {
-                    offsetX = 1000f
-                    onSwipe(Direction.RIGHT)
-                } else if (offsetX < -300) {
-                    offsetX = -1000f
-                    onSwipe(Direction.LEFT)
-                } else {
-                    // Snap the card back to its original position if not swiped off
-                    offsetX = 0f
+    enabled: Boolean = true,
+    distanceThreshold: Float = 0.35f,
+    velocityThreshold: Dp = 800.dp,
+    maxRotation: Float = 15f,
+): Modifier = this
+    .onSizeChanged { state.size = it }
+    .pointerInput(state, enabled) {
+        if (!enabled) return@pointerInput
+        val minFlingVelocity = velocityThreshold.toPx()
+        val tracker = VelocityTracker()
+        var dragPosition = Offset.Zero
+        coroutineScope {
+            detectDragGestures(
+                onDragStart = { touch ->
+                    if (state.swipedDirection == null) {
+                        tracker.resetTracking()
+                        dragPosition = state.offset.value
+                        state.tiltSign = if (touch.y < size.height / 2f) 1f else -1f
+                        launch { state.offset.stop() }
+                    }
+                },
+                onDrag = { change, dragAmount ->
+                    if (state.swipedDirection == null) {
+                        change.consume()
+                        dragPosition += dragAmount
+                        tracker.addPosition(change.uptimeMillis, dragPosition)
+                        val target = dragPosition
+                        launch { state.offset.snapTo(target) }
+                    }
+                },
+                onDragEnd = {
+                    if (state.swipedDirection == null) {
+                        val velocityX = tracker.calculateVelocity().x
+                        val limit = size.width * distanceThreshold
+                        val direction = when {
+                            velocityX > minFlingVelocity -> Direction.RIGHT
+                            velocityX < -minFlingVelocity -> Direction.LEFT
+                            dragPosition.x > limit -> Direction.RIGHT
+                            dragPosition.x < -limit -> Direction.LEFT
+                            else -> null
+                        }
+                        launch {
+                            if (direction == null) {
+                                state.reset()
+                            } else if (state.swipe(direction)) {
+                                onSwipe(direction)
+                            }
+                        }
+                    }
+                },
+                onDragCancel = {
+                    if (state.swipedDirection == null) {
+                        launch { state.reset() }
+                    }
                 }
-            }
-        )
-}
-
-@Composable
-fun rememberSwipeableCardOffset(initialOffset: Float): MutableState<Float> {
-    return rememberSaveable { mutableFloatStateOf(initialOffset) }
-}
+            )
+        }
+    }
+    .graphicsLayer {
+        translationX = state.offset.value.x
+        translationY = state.offset.value.y
+        rotationZ = state.progress * maxRotation * state.tiltSign
+    }

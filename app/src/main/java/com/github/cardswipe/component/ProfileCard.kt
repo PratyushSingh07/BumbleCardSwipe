@@ -16,35 +16,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.cardswipe.Dummy
 import com.github.cardswipe.utils.FontFamily
-import com.pratyush.swipeablecard.ExperimentalSwipeGestureApi
-import com.pratyush.swipeablecard.enums.Direction
-import com.pratyush.swipeablecard.swipeableCard
 
-@OptIn(ExperimentalSwipeGestureApi::class)
 @Composable
 fun ProfileCard(
     profile: Dummy,
-    onSwipe: (Direction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.LightGray,
         ),
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .swipeableCard(
-                onSwipe = onSwipe,
-                enableSpringEffect = true
-            ),
+        modifier = modifier,
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-
         ) {
             Text(
                 text = profile.name,
