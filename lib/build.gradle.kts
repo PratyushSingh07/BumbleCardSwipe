@@ -68,7 +68,7 @@ afterEvaluate{
 
                 groupId="com.github.PratyushSingh07"
                 artifactId = "BumbleCardSwipe"
-                version = "0.0.1"
+                version = "2.0.0"
             }
         }
     }

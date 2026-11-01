@@ -16,7 +16,7 @@ https://github.com/openMF/mifos-mobile/assets/90026952/fea1c49a-1cff-487c-a5e8-9
 ```kotlin
   dependencies {
     .....
-    implementation("com.github.PratyushSingh07:BumbleCardSwipe:1.0.0")
+    implementation("com.github.PratyushSingh07:BumbleCardSwipe:2.0.0")
   }
 ```
 - After you have done this make sure to add the below snippet to your `settings.gradle`:
@@ -38,7 +38,7 @@ https://github.com/openMF/mifos-mobile/assets/90026952/fea1c49a-1cff-487c-a5e8-9
 
 ```kotlin
   dependencies {
-	        implementation 'com.github.PratyushSingh07:BumbleCardSwipe:Tag'
+	        implementation 'com.github.PratyushSingh07:BumbleCardSwipe:2.0.0'
 	}
 ```
   
