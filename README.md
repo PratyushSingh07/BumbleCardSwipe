@@ -16,7 +16,7 @@ https://github.com/openMF/mifos-mobile/assets/90026952/fea1c49a-1cff-487c-a5e8-9
 ```kotlin
   dependencies {
     .....
-    implementation("com.github.PratyushSingh07:BumbleCardSwipe:1.0.0")\
+    implementation("com.github.PratyushSingh07:BumbleCardSwipe:1.0.0")
   }
 ```
 - After you have done this make sure to add the below snippet to your `settings.gradle`:
@@ -55,37 +55,27 @@ https://github.com/openMF/mifos-mobile/assets/90026952/fea1c49a-1cff-487c-a5e8-9
 ```
 
 **2. Usage**
-- Add the `Modifier.swipeableCard()` into your @Composable function to enable Bumble like card gestures:
- ```kotlin
- Box(
+- Create a `SwipeableCardState` and pass it to `Modifier.swipeableCard()` to enable Bumble like card gestures:
+```kotlin
+val state = rememberSwipeableCardState()
+
+Box(
     modifier = Modifier
         .fillMaxSize()
         .swipeableCard(
+            state = state,
             onSwipe = { direction ->
                 println("The card was swiped towards $direction")
             }
         )
 )
 ```
-- `onSwipe` is used when the card has been completely swiped off the screen
-- `Modifier.swipeableCard()` has another attribute besides onSwipe that allows user to enable a spring like effect in case the swipe was canceled
-- To enable it you need to use the below snippet:
-
-```kotlin
- Box(
-    modifier = Modifier
-        .fillMaxSize()
-        .swipeableCard(
-            onSwipe = { direction ->
-                println("The card was swiped towards $direction")
-            },
-            enableSpringEffect = true
-        )
-)
-```
-
-- By default the spring effect is set to false hence you have to set it to true in case you want to use it
-- Under the hood spring effect uses `spring(dampingRatio = Spring.DampingRatioMediumBouncy)` to produce the spring effect
+- `onSwipe` is called once the card has been completely swiped off the screen
+- A card is swiped when it is dragged past `distanceThreshold` (a fraction of its width, `0.35f` by default) or flung faster than `velocityThreshold` (`800.dp` per second by default)
+- Released cards that don't pass either threshold spring back to the center
+- `maxRotation` controls how far the card tilts while dragging, and the tilt direction follows whether the card was grabbed from its top or bottom half
+- `state.progress` goes from `-1f` to `1f` as the card moves left or right, which can drive overlays or scale the next card
+- `state.swipe(Direction.LEFT)` / `state.swipe(Direction.RIGHT)` swipe the card programmatically and `state.reset()` brings it back, which is useful for buttons and undo
 
 ### Developers
 - This was built by [Pratyush Singh](https://www.github.com/pratyushsingh07) & [Aditya Gupta](https://www.github.com/aditya-gupta99)
