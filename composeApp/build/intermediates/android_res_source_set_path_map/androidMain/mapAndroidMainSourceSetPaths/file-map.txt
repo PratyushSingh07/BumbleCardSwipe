@@ -1,4 +1,0 @@
-com.github.cardswipe.shared.composeApp-androidMain-0 /Users/pratyushsingh/BumbleCardSwipe/composeApp/build/generated/updated_navigation_xml/androidMain/res
-com.github.cardswipe.shared.composeApp-packageAndroidMainResources-1 /Users/pratyushsingh/BumbleCardSwipe/composeApp/build/intermediates/incremental/androidMain/packageAndroidMainResources/merged.dir
-com.github.cardswipe.shared.composeApp-packageAndroidMainResources-2 /Users/pratyushsingh/BumbleCardSwipe/composeApp/build/intermediates/incremental/androidMain/packageAndroidMainResources/stripped.dir
-com.github.cardswipe.shared.composeApp-packageAndroidMainResources-3 /Users/pratyushsingh/BumbleCardSwipe/composeApp/build/intermediates/packaged_res/androidMain/packageAndroidMainResources/res

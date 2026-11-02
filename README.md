@@ -1,57 +1,48 @@
 # BumbleCardSwipe
-Jetpack Compose Modifier that allows you to achieve bumble like swipe gesture
+Compose Multiplatform Modifier that allows you to achieve a Bumble like swipe gesture on Android, iOS, desktop and web
 
 ### Demo
 
 https://github.com/openMF/mifos-mobile/assets/90026952/fea1c49a-1cff-487c-a5e8-93b027738015
 
+### Supported platforms
+
+| Platform | Target |
+| --- | --- |
+| Android | `android` (minSdk 24) |
+| iOS | `iosArm64`, `iosSimulatorArm64` |
+| Desktop | `jvm` |
+| Web | `wasmJs` |
+
 ### How to enable swipe gesture
-- Follow the below steps to use the bumble like swipe gesture
-  
+
 **1. Add dependency**
 
-*Kotlin Scripts*
-- Add the below to your app `build.gradle` :
-  
+The library is published on Maven Central, so no extra repository is needed.
+
+*Kotlin Multiplatform*
 ```kotlin
-  dependencies {
-    .....
-    implementation("com.github.PratyushSingh07:BumbleCardSwipe:2.0.0")
-  }
-```
-- After you have done this make sure to add the below snippet to your `settings.gradle`:
-  
-```kotlin
-  dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        mavenCentral()
-        maven {
-            setUrl("https://jitpack.io")
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("io.github.pratyushsingh07:bumblecardswipe:3.0.0")
         }
     }
 }
 ```
 
-*Groovy*
-- Add the dependency to your app `build.gradle`:
-
+*Android only*
 ```kotlin
-  dependencies {
-	        implementation 'com.github.PratyushSingh07:BumbleCardSwipe:2.0.0'
-	}
+dependencies {
+    implementation("io.github.pratyushsingh07:bumblecardswipe:3.0.0")
+}
 ```
-  
-  - Add below snippet in your root `build.gradle` at the end of repositories:
-    
-```kotlin
-    dependencyResolutionManagement {
-		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-		repositories {
-			mavenCentral()
-			maven { url 'https://jitpack.io' }
-		}
-	}
+
+*Groovy*
+```groovy
+dependencies {
+    implementation 'io.github.pratyushsingh07:bumblecardswipe:3.0.0'
+}
 ```
 
 **2. Usage**
@@ -76,6 +67,50 @@ Box(
 - `maxRotation` controls how far the card tilts while dragging, and the tilt direction follows whether the card was grabbed from its top or bottom half
 - `state.progress` goes from `-1f` to `1f` as the card moves left or right, which can drive overlays or scale the next card
 - `state.swipe(Direction.LEFT)` / `state.swipe(Direction.RIGHT)` swipe the card programmatically and `state.reset()` brings it back, which is useful for buttons and undo
+- The API is marked with `@ExperimentalSwipeGestureApi`, so opt in with `@OptIn(ExperimentalSwipeGestureApi::class)`
+
+**3. A stack of cards**
+- When cards are shown in a list, wrap each one in `key()` so every card keeps its own state, and only compose the top few cards:
+```kotlin
+val profiles = remember { profileList.toMutableStateList() }
+
+Box {
+    profiles.take(3).asReversed().forEach { profile ->
+        key(profile.id) {
+            val state = rememberSwipeableCardState()
+            ProfileCard(
+                profile = profile,
+                modifier = Modifier.swipeableCard(
+                    state = state,
+                    onSwipe = { profiles.remove(profile) }
+                )
+            )
+        }
+    }
+}
+```
+- See `composeApp/src/commonMain/kotlin/com/github/cardswipe/App.kt` for a full example with Like/Nope buttons, undo and next-card scaling
+
+### Running the sample
+
+| Platform | How to run |
+| --- | --- |
+| Android | Run the `androidApp` configuration in Android Studio |
+| Desktop | `./gradlew :composeApp:run` |
+| Web | `./gradlew :composeApp:wasmJsBrowserDevelopmentRun` |
+| iOS | Open `iosApp/iosApp.xcodeproj` in Xcode and run on a simulator |
+
+### Older versions (JitPack)
+Versions up to `2.0.0` are Android only and stay available on JitPack under the old coordinates:
+```kotlin
+implementation("com.github.PratyushSingh07:BumbleCardSwipe:2.0.0")
+```
+They need `maven { setUrl("https://jitpack.io") }` in your repositories. `3.0.0` and later are published only on Maven Central.
+
+**Migrating from 2.0.0 to 3.0.0**
+- Replace `com.github.PratyushSingh07:BumbleCardSwipe` with `io.github.pratyushsingh07:bumblecardswipe`
+- Remove the JitPack repository if nothing else uses it
+- The Kotlin API is unchanged
 
 ### Developers
 - This was built by [Pratyush Singh](https://www.github.com/pratyushsingh07) & [Aditya Gupta](https://www.github.com/aditya-gupta99)
