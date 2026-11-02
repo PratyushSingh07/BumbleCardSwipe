@@ -1,0 +1,142 @@
+{
+  "projectStructure": {
+    "formatVersion": "0.3.3",
+    "isPublishedAsRoot": "true",
+    "variants": [
+      {
+        "name": "androidApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "androidRuntimeElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "desktopApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "desktopRuntimeElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "iosArm64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "iosSimulatorArm64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "jsApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "jsRuntimeElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "linuxArm64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "linuxX64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "macosArm64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "mingwX64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "tvosArm64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "tvosSimulatorArm64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "wasmJsApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "wasmJsRuntimeElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "watchosArm32ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "watchosArm64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      },
+      {
+        "name": "watchosSimulatorArm64ApiElements",
+        "sourceSet": [
+          "redirectCommonMain"
+        ]
+      }
+    ],
+    "sourceSets": [
+      {
+        "name": "commonMain",
+        "dependsOn": [],
+        "moduleDependency": [],
+        "binaryLayout": "klib"
+      },
+      {
+        "name": "redirectCommonMain",
+        "dependsOn": [],
+        "moduleDependency": [
+          "androidx.compose.runtime:runtime-saveable",
+          "org.jetbrains.compose.runtime:runtime",
+          "org.jetbrains.androidx.savedstate:savedstate-compose",
+          "org.jetbrains.kotlin:kotlin-stdlib",
+          "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose"
+        ],
+        "binaryLayout": "klib"
+      }
+    ]
+  }
+}

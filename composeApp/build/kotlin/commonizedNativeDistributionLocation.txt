@@ -1,0 +1,1 @@
+/Users/pratyushsingh/.konan/kotlin-native-prebuilt-macos-aarch64-2.4.21/klib/commonized/2.4.21

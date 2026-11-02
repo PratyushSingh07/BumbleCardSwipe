@@ -37,10 +37,10 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.compose.multiplatform.runtime)
+            api(libs.compose.multiplatform.runtime)
             implementation(libs.compose.multiplatform.foundation)
             implementation(libs.compose.multiplatform.animation)
-            implementation(libs.compose.multiplatform.ui)
+            api(libs.compose.multiplatform.ui)
         }
     }
 }

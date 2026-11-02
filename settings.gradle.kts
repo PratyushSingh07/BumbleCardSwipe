@@ -13,6 +13,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TinderCardSwipe"
-include(":app")
+rootProject.name = "BumbleCardSwipe"
+include(":androidApp")
+include(":composeApp")
 include(":lib")
