@@ -49,7 +49,7 @@ kotlin {
             implementation(libs.compose.multiplatform.material3)
             implementation(libs.compose.multiplatform.components.resources)
         }
-        val desktopMain by getting {
+        named("desktopMain") {
             dependencies {
                 implementation(compose.desktop.currentOs)
             }
