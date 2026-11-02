@@ -1,72 +1,52 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("maven-publish")
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.kotlin.compose)
+    id("maven-publish")
 }
 
-android {
-    namespace = "com.github.lib"
-    compileSdk = 37
-
-    defaultConfig {
-        minSdk = 24
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    buildFeatures {
-        compose = true
-    }
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
-}
+group = "com.github.PratyushSingh07"
+version = "2.0.0"
 
 kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+    android {
+        namespace = "com.pratyush.swipeablecard"
+        compileSdk = 37
+        minSdk = 24
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
+    iosArm64()
+    iosSimulatorArm64()
+
+    jvm("desktop") {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.compose.multiplatform.runtime)
+            implementation(libs.compose.multiplatform.foundation)
+            implementation(libs.compose.multiplatform.animation)
+            implementation(libs.compose.multiplatform.ui)
+        }
     }
 }
 
-dependencies {
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.compose.animation)
-    implementation(libs.androidx.compose.ui)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            register<MavenPublication>("release") {
-                from(components["release"])
-
-                groupId = "com.github.PratyushSingh07"
-                artifactId = "BumbleCardSwipe"
-                version = "2.0.0"
-            }
-        }
+publishing {
+    publications.withType<MavenPublication>().configureEach {
+        artifactId = artifactId.replace(project.name, "BumbleCardSwipe")
     }
 }
